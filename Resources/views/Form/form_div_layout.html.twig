@@ -1,0 +1,82 @@
+
+{% block bfos_cidade_choice_widget %}
+
+<div {{ block('widget_container_attributes') }}>
+{% for child in form %}
+    <div id="{{ id ~ "_" ~ child.get('name') }}">
+        {{ form_widget(child) }}
+        {% if child.get('name') == 'estado' %}
+        <span class="help-block">Selecione o estado e as cidades serão carregadas.</span>
+        {% endif %}
+        {% if child.get('name') == 'cidade' %}
+        <img id="{{ id ~ "_loader" }}" src="/bundles/bfosbrasil/images/ajax-loader.gif" alt="ajax-loader" style="display: none; ">
+        {% endif %}
+        {{ form_errors(child) }}
+    </div>
+{% endfor %}
+</div>
+
+<script type="text/javascript">
+$(document).ready(function(){
+
+    $("#{{ id ~ "_estado" }}").change( function() {
+//        console.info($(this).find('select'));
+//        console.info($(this).val());
+        var uf = $(this).find('select').val();
+        $("#{{ id ~ "_loader" }}").show();
+        $.ajax({
+            type: "GET",
+            data: "uf=" + uf,
+            url:"{{ path('bfos_brasil_cidades_busca') }}",
+            success: function(data){
+                if (data != ''){
+                    $("#{{ id ~ "_cidade" }}").find('select').html(data).show();
+                    $("#{{ id ~ "_loader" }}").hide();
+                }
+                else
+                {
+                    $("#{{ id ~ "_cidade" }}").html('<em>Sem resultados</em>');
+                    $("#{{ id ~ "_loader" }}").hide();
+                }
+           }
+       });
+   });
+
+   $("#provider_location_community").trigger('change');
+});
+</script>
+
+{% endblock bfos_cidade_choice_widget %}
+
+
+{% block bfos_brasil_ajax_loaded_entity_widget %}
+{% spaceless %}
+    {% if expanded %}
+        <div {{ block('widget_container_attributes') }}>
+        {% for child in form %}
+            {{ form_widget(child) }}
+            {{ form_label(child) }}
+        {% endfor %}
+        </div>
+    {% else %}
+    <select {{ block('widget_attributes') }}{% if multiple %} multiple="multiple"{% endif %}>
+        {% if empty_value is not none %}
+            <option value="">{{ empty_value|trans({}, translation_domain) }}</option>
+        {% endif %}
+        {% if preferred_choices|length > 0 %}
+            {% set options = preferred_choices %}
+            {{ block('widget_choice_options') }}
+            {% if choices|length > 0 and separator is not none %}
+                <option disabled="disabled">{{ separator }}</option>
+            {% endif %}
+        {% endif %}
+        {% set options = choices %}
+        {{ block('widget_choice_options') }}
+    </select>
+    {% endif %}
+{% endspaceless %}
+{% endblock bfos_brasil_ajax_loaded_entity_widget %}
+
+{% block bfos_brasil_ajax_choice_widget %}
+{{ block('choice_widget') }}
+{% endblock bfos_brasil_ajax_choice_widget %}
