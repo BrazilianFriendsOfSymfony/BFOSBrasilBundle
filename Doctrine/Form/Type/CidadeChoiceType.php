@@ -18,7 +18,6 @@ use Symfony\Component\Form\FormBuilder;
 use \BFOS\BrasilBundle\Doctrine\Form\DataTransformer\CidadeToIdTransformer;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
-use \Symfony\Component\Form\Extension\Core\ChoiceList\ChoiceList;
 use \BFOS\BrasilBundle\Doctrine\Form\EventListener\AddCidadeFieldSubscriber;
 
 class CidadeChoiceType extends AbstractType
@@ -66,7 +65,7 @@ class CidadeChoiceType extends AbstractType
     {
         $estados = self::getUFs();
         $builder
-            ->add('estado', 'choice', array('choices'=> $estados, 'index_strategy' => ChoiceList::COPY_CHOICE, 'value_strategy' => ChoiceList::COPY_CHOICE ))
+            ->add('estado', 'choice', array('choices'=> $estados ))
             ->add('cidade', 'bfos_brasil_ajax_entity', array('class'=>'BFOSBrasilBundle:Cidade', 'property'=>'nome', 'empty_value'=>'Escolha o estado primeiro'));
 
         $builder->prependClientTransformer(new CidadeToIdTransformer(

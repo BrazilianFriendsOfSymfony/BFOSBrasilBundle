@@ -13,26 +13,60 @@
 namespace BFOS\BrasilBundle\Doctrine\Form\Type;
 
 use Doctrine\Common\Persistence\ObjectManager;
-use Symfony\Bridge\Doctrine\Form\ChoiceList\ORMQueryBuilderLoader;
-use Symfony\Bridge\Doctrine\Form\Type\DoctrineType;
+use Symfony\Component\Form\FormBuilder;
+use Symfony\Bridge\Doctrine\RegistryInterface;
+use Symfony\Bridge\Doctrine\Form\ChoiceList\EntityChoiceList;
+use Symfony\Bridge\Doctrine\Form\EventListener\MergeCollectionListener;
+use Symfony\Bridge\Doctrine\Form\DataTransformer\EntitiesToArrayTransformer;
+use Symfony\Bridge\Doctrine\Form\DataTransformer\EntityToIdTransformer;
+use Symfony\Component\Form\AbstractType;
 
-class AjaxEntityType extends DoctrineType
+class AjaxEntityType extends AbstractType
 {
-    /**
-     * Return the default loader object.
-     *
-     * @param ObjectManager $manager
-     * @param array $options
-     * @return ORMQueryBuilderLoader
-     */
-    protected function getLoader(ObjectManager $manager, array $options)
+    protected $registry;
+
+    public function __construct(RegistryInterface $registry)
     {
-        return new ORMQueryBuilderLoader(
-            $options['query_builder'],
-            $manager,
-            $options['class']
-        );
+        $this->registry = $registry;
     }
+
+    public function buildForm(FormBuilder $builder, array $options)
+    {
+        if ($options['multiple']) {
+            $builder
+                ->addEventSubscriber(new MergeCollectionListener())
+                ->prependClientTransformer(new EntitiesToArrayTransformer($options['choice_list']))
+            ;
+        } else {
+            $builder->prependClientTransformer(new EntityToIdTransformer($options['choice_list']));
+        }
+    }
+
+    public function getDefaultOptions(array $options)
+    {
+        $defaultOptions = array(
+            'em'                => null,
+            'class'             => null,
+            'property'          => null,
+            'query_builder'     => null,
+            'choices'           => null,
+        );
+
+        $options = array_replace($defaultOptions, $options);
+
+        if (!isset($options['choice_list'])) {
+            $defaultOptions['choice_list'] = new EntityChoiceList(
+                $this->registry->getEntityManager($options['em']),
+                $options['class'],
+                $options['property'],
+                $options['query_builder'],
+                $options['choices']
+            );
+        }
+
+        return $defaultOptions;
+    }
+
 
     public function getParent(array $options)
     {
