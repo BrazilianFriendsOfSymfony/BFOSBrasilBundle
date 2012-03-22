@@ -37,6 +37,14 @@ class CidadeToIdTransformer implements DataTransformerInterface
         }
     }
 
+
+    /**
+     * Transforms the Cidade entity to a composed (estado,cidade_id) array value in the form
+     *
+     * @param $entity
+     * @return array|mixed|null|string
+     * @throws \Symfony\Component\Form\Exception\UnexpectedTypeException
+     */
     public function transform($entity)
     {
         if (null === $entity || '' === $entity) {
@@ -48,16 +56,15 @@ class CidadeToIdTransformer implements DataTransformerInterface
         }
         return array('estado'=>$entity->getUf(), 'cidade'=>$entity->getId());
 
-       if ($this->propertyPath) {
-       // If the property option was given, use it
-            $value = $this->propertyPath->getValue($entity);
-       } else {
-           // Otherwise expect a __toString() method in the entity
-           $value = (string)$entity;
-       }
-       return $value;
     }
 
+    /**
+     * Takes an
+     * @param $key
+     * @return null
+     * @throws \Symfony\Component\Form\Exception\TransformationFailedException
+     * @throws \Symfony\Component\Form\Exception\UnexpectedTypeException
+     */
     public function reverseTransform($key)
     {
           if ('' === $key || null === $key) {
@@ -74,14 +81,16 @@ class CidadeToIdTransformer implements DataTransformerInterface
              throw new TransformationFailedException(sprintf('The key "%s" is not valid', print_r($key,true)));
          }
 
-         if (!is_numeric($key['cidade']))
+         if (is_numeric($key['cidade']))
          {
-             throw new UnexpectedTypeException($key['cidade'], 'numeric');
+             $entity = $this->em->getRepository($this->class)->findOneById($key['cidade']);
+         } else {
+             $entity = $key['cidade'];
          }
 
 //        return $key['cidade'];
 
-         $entity = $this->em->getRepository($this->class)->findOneById($key['cidade']);
+
 
          if ($entity === null) {
              throw new TransformationFailedException(sprintf('The entity with key "%s" could not be found', $key));
