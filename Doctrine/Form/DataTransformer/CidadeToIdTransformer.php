@@ -54,7 +54,7 @@ class CidadeToIdTransformer implements DataTransformerInterface
         if (!is_object($entity)) {
             throw new UnexpectedTypeException($entity, 'object');
         }
-        return array('estado'=>$entity->getUf(), 'cidade'=>$entity->getId());
+        return array('estado'=>$entity->getUf(), 'cidade'=>$entity);
 
     }
 

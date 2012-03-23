@@ -33,7 +33,7 @@ class AddCidadeFieldSubscriber implements EventSubscriberInterface
     {
         // Tells the dispatcher that we want to listen on the form.pre_set_data
         // event and that the preSetData method should be called.
-        return array(FormEvents::PRE_SET_DATA => 'preSetData');
+        return array(FormEvents::PRE_SET_DATA => 'preSetData', FormEvents::PRE_BIND => 'preBind');
     }
 
     public function preSetData(DataEvent $event)
@@ -59,4 +59,21 @@ class AddCidadeFieldSubscriber implements EventSubscriberInterface
                 },)));
         }
     }
+
+    public function preBind(DataEvent $event){
+        $form = $event->getForm();
+        $data = $event->getData();
+        if (null === $data) {
+            return;
+        }
+
+        if (isset($data['estado'])) {
+            $form->remove('cidade');
+            $form->add($this->factory->createNamed('entity', 'cidade', null, array('class'=>'BFOSBrasilBundle:Cidade', 'property'=>'nome'/*, 'empty_value'=>'Escolha o estado primeiro'*/, 'query_builder' => function(EntityRepository $er) use ($data) {
+                return $er->createQueryBuilder('c')->where('c.uf = :uf')
+                    ->orderBy('c.nome', 'ASC')->setParameter('uf', $data['estado']);
+            },)));
+        }
+    }
+
 }
