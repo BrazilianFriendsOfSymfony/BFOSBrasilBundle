@@ -32,3 +32,26 @@ twig:
             - 'BFOSBrasilBundle:Form:form_div_layout.html.twig'
 
 
+Utilização
+==========
+
+Cidade/UF Form Type
+-------------------
+
+Em seu FormType adicione o campo do tipo
+
+$builder->add('cidade', 'bfos_cidade_choice');
+
+
+CPF/CNPJ Constraint Validator
+-----------------------------
+
+Na sua classe a ser validada utilize
+
+use BFOS\BrasilBundle\Validator\Constraints as BFOSBrasilAssert;
+
+e na propriedade a ser validada
+
+/**
+ * @BFOSBrasilAssert/Cpfcnpj()
+ */
