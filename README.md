@@ -7,8 +7,11 @@ com Symfony 2 no Brasil.
 Componentes
 ===========
 
+* Cidade/UF Form Type
 Widget que possibilita o uso de cidade em seus formulários. Exibir dois combos ESTADO/CIDADE e o conteúdo de cidade
 é carregado por Ajax.
+
+* CPF/CNPJ Constraint Validator
 
 Requisitos
 ==========
