@@ -33,14 +33,14 @@ class CpfcnpjValidator extends ConstraintValidator
         switch ($constraint->aceitar) {
 
             case 'cnpj':
-                if (!$this->checkCNPJ($value)) {
+                if (!$this->checkCNPJ($value, $constraint->aceitar_formatado)) {
                     $this->setMessage($constraint->message_cnpj, array('{{ value }}' => $value));
                     return false;
                 }
                 break;
 
             case 'cpf':
-                if (!$this->checkCPF($value)) {
+                if (!$this->checkCPF($value, $constraint->aceitar_formatado)) {
                     $this->setMessage($constraint->message_cpf, array('{{ value }}' => $value));
                     return false;
                 }
@@ -48,7 +48,7 @@ class CpfcnpjValidator extends ConstraintValidator
 
             case 'cpfcnpj':
             default:
-                if (!($this->checkCPF($value) || $this->checkCNPJ($value))) {
+                if (!($this->checkCPF($value, $constraint->aceitar_formatado) || $this->checkCNPJ($value, $constraint->aceitar_formatado))) {
                     $this->setMessage($constraint->message_cpfcnpj, array('{{ value }}' => $value));
                     return false;
                 }
@@ -67,10 +67,12 @@ class CpfcnpjValidator extends ConstraintValidator
      * @author Rafael Goulart <rafaelgou@rgou.net>
      * Retirado do plugin do SF1 brFormExtraPlugin
      */
-    protected function checkCPF($cpf) {
+    protected function checkCPF($cpf, $aceitar_formatado) {
 
         // Limpando caracteres especiais
-        $cpf = $this->valueClean($cpf);
+        if($aceitar_formatado){
+            $cpf = $this->valueClean($cpf);
+        }
 
         // Quantidade mínima de caracteres ou erro
         if (strlen($cpf) <> 11) return false;
@@ -106,8 +108,10 @@ class CpfcnpjValidator extends ConstraintValidator
      * @author Rafael Goulart <rafaelgou@rgou.net>
      * Retirado do plugin do SF1 brFormExtraPlugin
      */
-    protected function checkCNPJ($cnpj) {
-        $cnpj = $this->valueClean($cnpj);
+    protected function checkCNPJ($cnpj, $aceitar_formatado) {
+        if($aceitar_formatado){
+            $cnpj = $this->valueClean($cnpj);
+        }
         if (strlen($cnpj) <> 14) return false;
 
         // Primeiro dígito
