@@ -53,5 +53,5 @@ use BFOS\BrasilBundle\Validator\Constraints as BFOSBrasilAssert;
 e na propriedade a ser validada
 
 /**
- * @BFOSBrasilAssert/Cpfcnpj()
+ * @BFOSBrasilAssert\Cpfcnpj()
  */
