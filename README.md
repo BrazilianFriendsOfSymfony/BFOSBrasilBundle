@@ -11,7 +11,11 @@ Componentes
 Widget que possibilita o uso de cidade em seus formulários. Exibir dois combos ESTADO/CIDADE e o conteúdo de cidade
 é carregado por Ajax.
 
-* CPF/CNPJ Constraint Validator
+* CPF/CNPJ Constraint Validator: Valida CPF/CPNJ nos seus objetos de domínio.
+
+* Telefone Constraint Validator: Valida telefone nos seus objetos de domínio.
+
+* DDD Constraint Validator: Valida DDD nos seus objetos de domínio.
 
 Requisitos
 ==========
@@ -54,4 +58,40 @@ e na propriedade a ser validada
 
 /**
  * @BFOSBrasilAssert\Cpfcnpj()
+ */
+
+ Parâmetros:
+
+ - aceitar: cpfcnpj, cpf ou cnpf. cpfcnpj: pode conter CPF ou CNPJ válido; cpf: pode conter somente CPF válido; cnpj: pode conter somente CNPJ válido.
+ - aceitar_formatado: true ou false . Determina se o telefone pode conter os caracteres de formatação.
+
+Telefone Constraint Validator
+-----------------------------
+
+Na sua classe a ser validada utilize
+
+use BFOS\BrasilBundle\Validator\Constraints as BFOSBrasilAssert;
+
+e na propriedade a ser validada
+
+/**
+ * @BFOSBrasilAssert\Telefone()
+ */
+
+Parâmetros:
+
+- aceitar: dddtelefone ou telefone . dddtelefone: o telefone tem que ter o DDD junto; telefone: somente o telefone é esperado, sem o DDD.
+- aceitar_formatado: true ou false . Determina se o telefone pode conter os caracteres de formatação.
+
+DDD Constraint Validator
+-----------------------------
+
+Na sua classe a ser validada utilize
+
+use BFOS\BrasilBundle\Validator\Constraints as BFOSBrasilAssert;
+
+e na propriedade a ser validada
+
+/**
+ * @BFOSBrasilAssert\Ddd()
  */
