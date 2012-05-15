@@ -3,7 +3,6 @@
 namespace BFOS\BrasilBundle\DataFixtures\ORM;
 
 use Doctrine\Common\DataFixtures\FixtureInterface;
-use Duo\BaseSonataApp\UserBundle\Entity\User;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use \Doctrine\Common\DataFixtures\AbstractFixture;
@@ -25,7 +24,6 @@ class LoadCidadeData extends AbstractFixture implements OrderedFixtureInterface,
     public function load(ObjectManager $manager)
     {
         $parsed = Yaml::parse(dirname(__DIR__).'/fixtures-cidades.yml');
-        echo $parsed;
 
         $cidades = reset($parsed);
 
