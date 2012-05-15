@@ -23,7 +23,7 @@ class CidadeController extends Controller
         $cidades = $rcidades->findByUf($uf);
 
         if (empty($cidades)) {
-            return new Response('<option>Nenhuma cidade encontrada.</option>');
+            return new Response('<option value="">Nenhuma cidade encontrada.</option>');
         }
 
         $html = '';

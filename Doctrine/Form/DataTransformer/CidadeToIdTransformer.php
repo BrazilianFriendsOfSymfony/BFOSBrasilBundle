@@ -67,7 +67,7 @@ class CidadeToIdTransformer implements DataTransformerInterface
      */
     public function reverseTransform($key)
     {
-          if ('' === $key || null === $key) {
+          if ('' === $key['cidade'] || null === $key['cidade']) {
           return null;
           }
 
