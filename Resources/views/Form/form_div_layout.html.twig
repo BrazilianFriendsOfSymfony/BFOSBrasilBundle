@@ -9,7 +9,7 @@
         <span class="help-block">Selecione o estado e as cidades serão carregadas.</span>
         {% endif %}
         {% if child.get('name') == 'cidade' %}
-        <img id="{{ id ~ "_loader" }}" src="/bundles/bfosbrasil/images/ajax-loader.gif" alt="ajax-loader" style="display: none; ">
+        <img id="{{ id ~ "_loader" }}" src="{{asset('bundles/bfosbrasil/images/ajax-loader.gif')}}" alt="ajax-loader" style="display: none; ">
         {% endif %}
         {{ form_errors(child) }}
     </div>
