@@ -19,11 +19,10 @@
 <script type="text/javascript">
 $(document).ready(function(){
 
+    var {{ id ~ "_estado" }}_loaded = false;
     $("#{{ id ~ "_estado" }}").change( function() {
-//        console.info($(this).find('select'));
-//        console.info($(this).val());
         var uf = $(this).find('select').val();
-        if(uf.length>0){
+        if({{ id ~ "_estado" }}_loaded == true || uf != '0' ){
             $("#{{ id ~ "_loader" }}").show();
             $.ajax({
                 type: "GET",
@@ -42,7 +41,8 @@ $(document).ready(function(){
                 }
             });
         }
-   });
+        {{ id ~ "_estado" }}_loaded = true;
+    });
 
     $("#{{ id ~ "_estado" }}").trigger('change');
 });
