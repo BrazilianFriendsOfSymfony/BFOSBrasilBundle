@@ -23,23 +23,25 @@ $(document).ready(function(){
 //        console.info($(this).find('select'));
 //        console.info($(this).val());
         var uf = $(this).find('select').val();
-        $("#{{ id ~ "_loader" }}").show();
-        $.ajax({
-            type: "GET",
-            data: "uf=" + uf,
-            url:"{{ path('bfos_brasil_cidades_busca') }}",
-            success: function(data){
-                if (data != ''){
-                    $("#{{ id ~ "_cidade" }}").find('select').html(data).show();
-                    $("#{{ id ~ "_loader" }}").hide();
+        if(uf.length>0){
+            $("#{{ id ~ "_loader" }}").show();
+            $.ajax({
+                type: "GET",
+                data: "uf=" + uf,
+                url:"{{ path('bfos_brasil_cidades_busca') }}",
+                success: function(data){
+                    if (data != ''){
+                        $("#{{ id ~ "_cidade" }}").find('select').html(data).show();
+                        $("#{{ id ~ "_loader" }}").hide();
+                    }
+                    else
+                    {
+                        $("#{{ id ~ "_cidade" }}").html('<em>Sem resultados</em>');
+                        $("#{{ id ~ "_loader" }}").hide();
+                    }
                 }
-                else
-                {
-                    $("#{{ id ~ "_cidade" }}").html('<em>Sem resultados</em>');
-                    $("#{{ id ~ "_loader" }}").hide();
-                }
-           }
-       });
+            });
+        }
    });
 
     $("#{{ id ~ "_estado" }}").trigger('change');
