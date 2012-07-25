@@ -1,0 +1,35 @@
+{
+    "name": "brazilianfriendsofsymfony/brasil-bundle",
+    "type": "symfony-bundle",
+    "description": "Symfony BFOSBrasilBundle",
+    "keywords": ["Deployment management"],
+    "homepage": "http://www.duocriativa.com.br/bfos",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Paulo Roberto Ribeiro",
+            "email": "paulo@duocriativa.com.br"
+        },
+        {
+            "name": "BrazilianFriendsOfSymfony Community",
+            "homepage": "https://github.com/BrazilianFriendsOfSymfony/BFOSBrasilBundle/contributors"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "php": ">=5.3.2",
+        "symfony/framework-bundle": "2.0.*",
+        "symfony/security-bundle": "2.0.*"
+    },
+    "require-dev": {
+        "twig/twig": "*",
+        "doctrine/doctrine-bundle": "*",
+        "swiftmailer/swiftmailer": "*",
+        "symfony/yaml": "2.1.*",
+        "symfony/validator": "2.1.*"
+    },
+    "autoload": {
+        "psr-0": { "BFOS\\BrasilBundle": "" }
+    },
+    "target-dir": "BFOS/BrasilBundle"
+}
