@@ -2,7 +2,7 @@
     "name": "brazilianfriendsofsymfony/brasil-bundle",
     "type": "symfony-bundle",
     "description": "Symfony BFOSBrasilBundle",
-    "keywords": ["Deployment management"],
+    "keywords": ["Brasil localized twig"],
     "homepage": "http://www.duocriativa.com.br/bfos",
     "license": "MIT",
     "authors": [
