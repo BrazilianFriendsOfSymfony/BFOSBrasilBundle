@@ -25,7 +25,6 @@
         "twig/twig": "*",
         "doctrine/doctrine-bundle": "*",
         "swiftmailer/swiftmailer": "*",
-        "symfony/yaml": "2.1.*",
         "symfony/validator": "2.1.*"
     },
     "autoload": {
