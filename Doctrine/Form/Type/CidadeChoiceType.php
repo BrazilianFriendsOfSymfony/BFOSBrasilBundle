@@ -13,6 +13,7 @@
 namespace BFOS\BrasilBundle\Doctrine\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\Form\FormBuilder;
 use \BFOS\BrasilBundle\Doctrine\Form\DataTransformer\CidadeToIdTransformer;
@@ -61,7 +62,7 @@ class CidadeChoiceType extends AbstractType
           );
       }
 
-    public function buildForm(FormBuilder $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $estados = self::getUFs();
         $builder
@@ -96,18 +97,14 @@ class CidadeChoiceType extends AbstractType
         return $options;
     }
 
-    public function getParent(array $options)
+    public function getParent()
     {
-         if ($options['hidden']) {
+         /*if ($options['hidden']) {
             return 'hidden';
-         }
+         }*/
          return 'form';
     }
 
-    public function buildView(FormView $view, FormInterface $form)
-    {
-        parent::buildView($view, $form);
-    }
 
 
     public function getName()

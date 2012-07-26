@@ -33,7 +33,7 @@ class AjaxChoiceType extends \Symfony\Component\Form\Extension\Core\Type\ChoiceT
     /**
      * {@inheritdoc}
      */
-    public function buildView(FormView $view, FormInterface $form)
+    public function buildView(FormView $view, FormInterface $form, array $options)
     {
         $choiceList = $form->getAttribute('choice_list');
 

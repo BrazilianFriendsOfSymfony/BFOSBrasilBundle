@@ -13,6 +13,7 @@
 namespace BFOS\BrasilBundle\Doctrine\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\Form\FormBuilder;
 use BFOS\BrasilBundle\Doctrine\Form\DataTransformer\TextToIdTransformer;
@@ -26,7 +27,7 @@ class NullEntityType extends AbstractType
         $this->registry = $registry;
     }
 
-    public function buildForm(FormBuilder $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options)
     {
         /*$builder->prependClientTransformer(new TextToIdTransformer(
             $this->registry->getEntityManager($options['em']),
@@ -85,7 +86,7 @@ class NullEntityType extends AbstractType
         return $options;
     }*/
 
-    public function getParent(array $options)
+    public function getParent()
     {
          /*if (isset($options['hidden']) && $options['hidden']) {
             return 'hidden';

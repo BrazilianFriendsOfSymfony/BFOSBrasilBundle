@@ -13,6 +13,7 @@
 namespace BFOS\BrasilBundle\Doctrine\Form\Type;
 
 use Doctrine\Common\Persistence\ObjectManager;
+use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormBuilder;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Bridge\Doctrine\Form\ChoiceList\EntityChoiceList;
@@ -30,7 +31,7 @@ class AjaxEntityType extends AbstractType
         $this->registry = $registry;
     }
 
-    public function buildForm(FormBuilder $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options)
     {
         if ($options['multiple']) {
             $builder
@@ -68,7 +69,7 @@ class AjaxEntityType extends AbstractType
     }
 
 
-    public function getParent(array $options)
+    public function getParent()
     {
         return 'bfos_brasil_ajax_choice';
     }
