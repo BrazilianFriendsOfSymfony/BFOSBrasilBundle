@@ -17,9 +17,14 @@
 </div>
 
 <script type="text/javascript">
-$(document).ready(function(){
+jQuery(document).ready(function($){
 
     var {{ id ~ "_estado" }}_loaded = false;
+    {% if value.cidade is defined %}
+    var {{ id ~ "_estado" }}_load_cidade = {{value.cidade}};
+    {% else %}
+    var {{ id ~ "_estado" }}_load_cidade = false;
+    {% endif %}
     $("#{{ id ~ "_estado" }}").change( function() {
         var uf = $(this).find('select').val();
         if({{ id ~ "_estado" }}_loaded == true || uf != '0' ){
@@ -32,6 +37,10 @@ $(document).ready(function(){
                     if (data != ''){
                         $("#{{ id ~ "_cidade" }}").find('select').html(data).show();
                         $("#{{ id ~ "_loader" }}").hide();
+                        if({{ id ~ "_estado" }}_load_cidade){
+                            $("#{{ id ~ "_cidade" }}").find('select').val({{ id ~ "_estado" }}_load_cidade);
+                            {{ id ~ "_estado" }}_load_cidade = false;
+                        }
                     }
                     else
                     {
@@ -51,34 +60,14 @@ $(document).ready(function(){
 {% endblock bfos_cidade_choice_widget %}
 
 
-{% block bfos_brasil_ajax_loaded_entity_widget %}
+{% block bfos_brasil_cidade_entity_widget %}
 {% spaceless %}
-    {% if expanded %}
-        <div {{ block('widget_container_attributes') }}>
-        {% for child in form %}
-            {{ form_widget(child) }}
-            {{ form_label(child) }}
-        {% endfor %}
-        </div>
-    {% else %}
-    <select {{ block('widget_attributes') }}{% if multiple %} multiple="multiple"{% endif %}>
+    <select {{ block('widget_attributes') }}>
         {% if empty_value is not none %}
             <option value="">{{ empty_value|trans({}, translation_domain) }}</option>
-        {% endif %}
-        {% if preferred_choices|length > 0 %}
-            {% set options = preferred_choices %}
-            {{ block('widget_choice_options') }}
-            {% if choices|length > 0 and separator is not none %}
-                <option disabled="disabled">{{ separator }}</option>
-            {% endif %}
         {% endif %}
         {% set options = choices %}
         {{ block('widget_choice_options') }}
     </select>
-    {% endif %}
 {% endspaceless %}
-{% endblock bfos_brasil_ajax_loaded_entity_widget %}
-
-{% block bfos_brasil_ajax_choice_widget %}
-{{ block('choice_widget') }}
-{% endblock bfos_brasil_ajax_choice_widget %}
+{% endblock bfos_brasil_cidade_entity_widget %}

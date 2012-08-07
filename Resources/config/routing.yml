@@ -1,0 +1,5 @@
+
+bfos_brasil_cidade:
+    resource: "@BFOSBrasilBundle/Controller/CidadeController.php"
+    type:     annotation
+    prefix:   /

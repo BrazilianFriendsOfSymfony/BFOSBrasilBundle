@@ -5,8 +5,7 @@
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <parameters>
-        <parameter key="bfos_brasil.form_type.ajax_choice.class">BFOS\BrasilBundle\Doctrine\Form\Type\AjaxChoiceType</parameter>
-        <parameter key="bfos_brasil.form_type.ajax_entity.class">BFOS\BrasilBundle\Doctrine\Form\Type\AjaxEntityType</parameter>
+        <parameter key="bfos_brasil.form_type.bfos_brasil_cidade_entity.class">BFOS\BrasilBundle\Doctrine\Form\Type\CidadeEntityType</parameter>
         <!--<parameter key="bfos_brasil.form.type.null_entity.class">BFOS\BrasilBundle\Doctrine\Form\Type\NullEntityType</parameter>-->
         <parameter key="bfos_brasil.form.type.cidade_choice.class">BFOS\BrasilBundle\Doctrine\Form\Type\CidadeChoiceType</parameter>
     </parameters>
@@ -22,7 +21,12 @@
             <argument type="service" id="doctrine"/>
         </service>-->
 
-        <service id="bfos_brasil.form_type.ajax_choice" class="%bfos_brasil.form_type.ajax_choice.class%">
+        <service id="bfos_brasil.form_type.ajax_choice" class="%bfos_brasil.form_type.bfos_brasil_cidade_entity.class%">
+            <tag name="form.type" alias="bfos_brasil_cidade_entity"/>
+            <argument type="service" id="service_container"/>
+        </service>
+
+        <!--<service id="bfos_brasil.form_type.ajax_choice" class="%bfos_brasil.form_type.ajax_choice.class%">
             <tag name="form.type" alias="bfos_brasil_ajax_choice"/>
             <argument type="service" id="doctrine"/>
         </service>
@@ -30,7 +34,7 @@
         <service id="bfos_brasil.form_type.ajax_entity" class="%bfos_brasil.form_type.ajax_entity.class%">
             <tag name="form.type" alias="bfos_brasil_ajax_entity"/>
             <argument type="service" id="doctrine"/>
-        </service>
+        </service>-->
 
         <service id="bfos_brasil.form.type.cidade_choice" class="%bfos_brasil.form.type.cidade_choice.class%">
             <tag name="form.type" alias="bfos_cidade_choice"/>

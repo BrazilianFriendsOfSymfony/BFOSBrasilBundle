@@ -53,7 +53,7 @@ class AddCidadeFieldSubscriber implements EventSubscriberInterface
         // check if the product object is "new"
         if ($data->getId()) {
             $form->remove('cidade');
-            $form->add($this->factory->createNamed('entity', 'cidade', null, array('class'=>'BFOSBrasilBundle:Cidade', 'property'=>'nome'/*, 'empty_value'=>'Escolha o estado primeiro'*/, 'query_builder' => function(EntityRepository $er) use ($data) {
+            $form->add($this->factory->createNamed('cidade', 'entity', null, array('class'=>'BFOSBrasilBundle:Cidade', 'property'=>'nome'/*, 'empty_value'=>'Escolha o estado primeiro'*/, 'query_builder' => function(EntityRepository $er) use ($data) {
                     return $er->createQueryBuilder('c')->where('c.uf = :uf')
                         ->orderBy('c.nome', 'ASC')->setParameter('uf', $data->getUf());
                 },)));
@@ -69,7 +69,7 @@ class AddCidadeFieldSubscriber implements EventSubscriberInterface
 
         if (isset($data['estado'])) {
             $form->remove('cidade');
-            $form->add($this->factory->createNamed('entity', 'cidade', null, array('class'=>'BFOSBrasilBundle:Cidade', 'property'=>'nome'/*, 'empty_value'=>'Escolha o estado primeiro'*/, 'query_builder' => function(EntityRepository $er) use ($data) {
+            $form->add($this->factory->createNamed('cidade', 'entity', null, array('class'=>'BFOSBrasilBundle:Cidade', 'property'=>'nome'/*, 'empty_value'=>'Escolha o estado primeiro'*/, 'query_builder' => function(EntityRepository $er) use ($data) {
                 return $er->createQueryBuilder('c')->where('c.uf = :uf')
                     ->orderBy('c.nome', 'ASC')->setParameter('uf', $data['estado']);
             },)));

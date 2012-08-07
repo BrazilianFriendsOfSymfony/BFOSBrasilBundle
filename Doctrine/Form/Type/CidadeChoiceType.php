@@ -13,6 +13,8 @@
 namespace BFOS\BrasilBundle\Doctrine\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use BFOS\BrasilBundle\Doctrine\Form\DataTransformer\CidadeUFToIdTransformer;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\Form\FormBuilder;
@@ -67,35 +69,18 @@ class CidadeChoiceType extends AbstractType
         $estados = self::getUFs();
         $builder
             ->add('estado', 'choice', array('choices'=> $estados ))
-            ->add('cidade', 'bfos_brasil_ajax_entity', array('class'=>'BFOSBrasilBundle:Cidade', 'property'=>'nome', 'empty_value'=>'Escolha o estado primeiro'));
+            ->add('cidade', 'bfos_brasil_cidade_entity');
 
-        $builder->prependClientTransformer(new CidadeToIdTransformer(
+        /*$builder->addViewTransformer(new CidadeToIdTransformer(
             $this->registry->getEntityManager($options['em']),
             'BFOSBrasilBundle:Cidade',
             'nome'
-        ));
+        ));*/
         $subscriber = new AddCidadeFieldSubscriber($builder->getFormFactory());
         $builder->addEventSubscriber($subscriber);
-        /*$builder
-//                    ->setAttribute('virtual', isset($options['virtual'])?$options['virtual']:false)
-                    ->setDataMapper(new \Symfony\Component\Form\Extension\Core\DataMapper\PropertyPathMapper($options['data_class']))
-                ;*/
+        $builder->addViewTransformer(new CidadeUFToIdTransformer());
     }
 
-    public function getDefaultOptions(array $options)
-    {
-        $defaultOptions = array(
-            'em'                => null,
-            'class'             => null,
-            'property'          => null,
-            'hidden'            => false,
-            'choices'           => array()
-        );
-
-        $options = array_replace($defaultOptions, $options);
-
-        return $options;
-    }
 
     public function getParent()
     {

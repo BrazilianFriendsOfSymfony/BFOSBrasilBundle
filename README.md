@@ -27,71 +27,26 @@ Instalação
 
 1. Adicione o arquivo de formulário do BrasilBundle
 
-# Twig Configuration
-twig:
-    debug:            %kernel.debug%
-    strict_variables: %kernel.debug%
-    form:
-        resources:
-            - 'BFOSBrasilBundle:Form:form_div_layout.html.twig'
+    # Twig Configuration
+    twig:
+        debug:            %kernel.debug%
+        strict_variables: %kernel.debug%
+        form:
+            resources:
+                - 'BFOSBrasilBundle:Form:form_div_layout.html.twig'
+
+2. Importe as rotas no routing.yml
+
+    bfos_brasil:
+        resource: "@BFOSBrasilBundle/Resources/config/routing.yml"
 
 
-Utilização
-==========
+3. Para utilizar Cidade/UF Form Type, é necessário utilizar o bundle DoctrineFixturesBundle para carregar as
+cidades no banco de dados. O comando abaixo fará isso.
 
-Cidade/UF Form Type
--------------------
+    php app/console doctrine:fixtures:load
 
-Em seu FormType adicione o campo do tipo
+Documentação
+============
 
-$builder->add('cidade', 'bfos_cidade_choice');
-
-
-CPF/CNPJ Constraint Validator
------------------------------
-
-Na sua classe a ser validada utilize
-
-use BFOS\BrasilBundle\Validator\Constraints as BFOSBrasilAssert;
-
-e na propriedade a ser validada
-
-/**
- * @BFOSBrasilAssert\Cpfcnpj()
- */
-
- Parâmetros:
-
- - aceitar: cpfcnpj, cpf ou cnpf. cpfcnpj: pode conter CPF ou CNPJ válido; cpf: pode conter somente CPF válido; cnpj: pode conter somente CNPJ válido.
- - aceitar_formatado: true ou false . Determina se o telefone pode conter os caracteres de formatação.
-
-Telefone Constraint Validator
------------------------------
-
-Na sua classe a ser validada utilize
-
-use BFOS\BrasilBundle\Validator\Constraints as BFOSBrasilAssert;
-
-e na propriedade a ser validada
-
-/**
- * @BFOSBrasilAssert\Telefone()
- */
-
-Parâmetros:
-
-- aceitar: dddtelefone ou telefone . dddtelefone: o telefone tem que ter o DDD junto; telefone: somente o telefone é esperado, sem o DDD.
-- aceitar_formatado: true ou false . Determina se o telefone pode conter os caracteres de formatação.
-
-DDD Constraint Validator
------------------------------
-
-Na sua classe a ser validada utilize
-
-use BFOS\BrasilBundle\Validator\Constraints as BFOSBrasilAssert;
-
-e na propriedade a ser validada
-
-/**
- * @BFOSBrasilAssert\Ddd()
- */
+Veja a pasta Resources/doc para mais informações.

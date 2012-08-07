@@ -18,22 +18,8 @@ use Symfony\Component\Form\Util\PropertyPath;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
 use Symfony\Component\Form\Exception\TransformationFailedException;
 
-class CidadeToIdTransformer implements DataTransformerInterface
+class CidadeUFToIdTransformer implements DataTransformerInterface
 {
-
-    protected $em;
-    protected $class = 'BFOSBrasilBundle:Cidade';
-    protected $propertyPath = 'nome';
-
-    public function __construct(EntityManager $em)
-    {
-        $this->em = $em;
-
-        // The property option defines, which property (path) is used for
-        // displaying entities as strings
-        $this->propertyPath = new PropertyPath($this->propertyPath);
-    }
-
 
     /**
      * Transforms the Cidade entity to a composed (estado,cidade_id) array value in the form
@@ -51,7 +37,7 @@ class CidadeToIdTransformer implements DataTransformerInterface
         if (!is_object($entity)) {
             throw new UnexpectedTypeException($entity, 'object');
         }
-        return $entity->getId();
+        return array('estado'=>$entity->getUf(), 'cidade'=>$entity->getId());
 
     }
 
@@ -64,20 +50,22 @@ class CidadeToIdTransformer implements DataTransformerInterface
      */
     public function reverseTransform($key)
     {
-        if ('' === $key || null === $key) {
+        if ('' === $key || null === $key || !isset($key['cidade']) || !isset($key['estado']) ) {
             return null;
         }
 
-        if (!is_integer($key)) {
-            throw new TransformationFailedException(sprintf('O id "%s" da cidade não é válido', $key));
+        if (!is_object($key['cidade'])) {
+            throw new TransformationFailedException(sprintf('Cidade não é um objeto válido.', $key));
         }
 
-        $entity = $this->em->getRepository($this->class)->findOneById($key);
-
-        if ($entity === null) {
-            throw new TransformationFailedException(sprintf('A cidade com id "%s" não foi encontrada.', $key));
+        if (!is_string($key['estado'])) {
+            throw new TransformationFailedException(sprintf('UF não é um texto válido.', $key));
         }
 
-        return $entity;
+        if ($key['cidade']->getUf()!=$key['estado']) {
+            throw new TransformationFailedException(sprintf('Cidade [%s] não pertence ao estado [%s].', $key['cidade']->getNome(), $key['estado']));
+        }
+
+        return $key['cidade'];
     }
 }
