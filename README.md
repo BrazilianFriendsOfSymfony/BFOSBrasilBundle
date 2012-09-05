@@ -21,6 +21,7 @@ Requisitos
 ==========
 
 - jQuery
+- RequireJS
 
 Instalação
 ==========
