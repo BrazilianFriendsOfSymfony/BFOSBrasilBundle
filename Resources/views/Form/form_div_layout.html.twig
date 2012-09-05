@@ -17,43 +17,47 @@
 </div>
 
 <script type="text/javascript">
-jQuery(document).ready(function($){
+require(['jquery'], function($){
 
-    var {{ id ~ "_estado" }}_loaded = false;
-    {% if value.cidade is defined %}
-    var {{ id ~ "_estado" }}_load_cidade = {{value.cidade}};
-    {% else %}
-    var {{ id ~ "_estado" }}_load_cidade = false;
-    {% endif %}
-    $("#{{ id ~ "_estado" }}").change( function() {
-        var uf = $(this).find('select').val();
-        if({{ id ~ "_estado" }}_loaded == true || uf != '0' ){
-            $("#{{ id ~ "_loader" }}").show();
-            $.ajax({
-                type: "GET",
-                data: "uf=" + uf,
-                url:"{{ path('bfos_brasil_cidades_busca') }}",
-                success: function(data){
-                    if (data != ''){
-                        $("#{{ id ~ "_cidade" }}").find('select').html(data).show();
-                        $("#{{ id ~ "_loader" }}").hide();
-                        if({{ id ~ "_estado" }}_load_cidade){
-                            $("#{{ id ~ "_cidade" }}").find('select').val({{ id ~ "_estado" }}_load_cidade);
-                            {{ id ~ "_estado" }}_load_cidade = false;
+    jQuery(document).ready(function($){
+
+        var {{ id ~ "_estado" }}_loaded = false;
+        {% if value.cidade is defined %}
+        var {{ id ~ "_estado" }}_load_cidade = {{value.cidade}};
+        {% else %}
+        var {{ id ~ "_estado" }}_load_cidade = false;
+        {% endif %}
+        $("#{{ id ~ "_estado" }}").change( function() {
+            var uf = $(this).find('select').val();
+            if({{ id ~ "_estado" }}_loaded == true || uf != '0' ){
+                $("#{{ id ~ "_loader" }}").show();
+                $.ajax({
+                    type: "GET",
+                    data: "uf=" + uf,
+                    url:"{{ path('bfos_brasil_cidades_busca') }}",
+                    success: function(data){
+                        if (data != ''){
+                            $("#{{ id ~ "_cidade" }}").find('select').html(data).show();
+                            $("#{{ id ~ "_loader" }}").hide();
+                            if({{ id ~ "_estado" }}_load_cidade){
+                                $("#{{ id ~ "_cidade" }}").find('select').val({{ id ~ "_estado" }}_load_cidade);
+                                {{ id ~ "_estado" }}_load_cidade = false;
+                            }
+                        }
+                        else
+                        {
+                            $("#{{ id ~ "_cidade" }}").html('<em>Sem resultados</em>');
+                            $("#{{ id ~ "_loader" }}").hide();
                         }
                     }
-                    else
-                    {
-                        $("#{{ id ~ "_cidade" }}").html('<em>Sem resultados</em>');
-                        $("#{{ id ~ "_loader" }}").hide();
-                    }
-                }
-            });
-        }
-        {{ id ~ "_estado" }}_loaded = true;
+                });
+            }
+            {{ id ~ "_estado" }}_loaded = true;
+        });
+
+        $("#{{ id ~ "_estado" }}").trigger('change');
     });
 
-    $("#{{ id ~ "_estado" }}").trigger('change');
 });
 </script>
 
