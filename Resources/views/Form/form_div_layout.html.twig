@@ -6,7 +6,7 @@
     <div id="{{ id ~ "_" ~ child.get('name') }}">
         {{ form_widget(child) }}
         {% if child.get('name') == 'estado' %}
-        <span class="help-block">Selecione o estado e as cidades serão carregadas.</span>
+        <span class="help-block">Cidade</span>
         {% endif %}
         {% if child.get('name') == 'cidade' %}
         <img id="{{ id ~ "_loader" }}" src="{{asset('bundles/bfosbrasil/images/ajax-loader.gif')}}" alt="ajax-loader" style="display: none; ">

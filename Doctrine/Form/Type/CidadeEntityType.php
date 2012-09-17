@@ -39,7 +39,7 @@ class CidadeEntityType extends AbstractType
 
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
-        $view->vars['empty_value'] = 'Selecione o estado primeiro';
+        $view->vars['empty_value'] = 'Primeiro selecione o estado';
         $view->vars['choices'] = array();
     }
 
