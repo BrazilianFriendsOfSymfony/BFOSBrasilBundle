@@ -17,15 +17,7 @@
     ],
     "minimum-stability": "dev",
     "require": {
-        "php": ">=5.3.2",
-        "symfony/framework-bundle": "2.1.*"
-    },
-    "require-dev": {
-        "twig/twig": "*",
-        "doctrine/doctrine-bundle": "*",
-        "swiftmailer/swiftmailer": "*",
-        "symfony/yaml": "2.1.*",
-        "symfony/validator": "2.1.*"
+        "php": ">=5.3.2"
     },
     "autoload": {
         "psr-0": { "BFOS\\BrasilBundle": "" }
