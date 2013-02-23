@@ -67,9 +67,15 @@ class CidadeChoiceType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $estados = self::getUFs();
+        $estado_options = array('choices' => $estados);
+        $cidade_options = array();
+        if($options['required']){
+            $cidade_options['required'] = true;
+            $estado_options['required'] = true;
+        }
         $builder
-            ->add('estado', 'choice', array('choices'=> $estados ))
-            ->add('cidade', 'bfos_brasil_cidade_entity');
+            ->add('estado', 'choice', $estado_options)
+            ->add('cidade', 'bfos_brasil_cidade_entity', $cidade_options);
 
         /*$builder->addViewTransformer(new CidadeToIdTransformer(
             $this->registry->getEntityManager($options['em']),
