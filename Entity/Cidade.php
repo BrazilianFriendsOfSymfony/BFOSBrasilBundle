@@ -35,6 +35,14 @@ class Cidade
      */
     private $uf;
 
+    /**
+     * Código do munício segundo a tabela do IBGE.
+     *
+     * @var string $codigoIbge
+     *
+     * @ORM\Column(name="codigo_ibge", type="string", length=10)
+     */
+    private $codigoIbge;
 
     /**
      * Get id
@@ -88,6 +96,28 @@ class Cidade
     public function getUf()
     {
         return $this->uf;
+    }
+
+    /**
+     * Set Código IBGE
+     *
+     * @param string $codigoIbge
+     * @return Cidade
+     */
+    public function setCodigoIbge($codigoIbge)
+    {
+        $this->codigoIbge = $codigoIbge;
+        return $this;
+    }
+
+    /**
+     * Get Código IBGE
+     *
+     * @return string
+     */
+    public function getCodigoIbge()
+    {
+        return $this->codigoIbge;
     }
 
     function __toString()
