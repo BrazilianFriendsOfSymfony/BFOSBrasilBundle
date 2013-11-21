@@ -1,6 +1,5 @@
 <?php
 
-
 namespace BFOS\BrasilBundle\Command;
 
 use BFOS\BrasilBundle\Entity\Cidade;
@@ -20,7 +19,7 @@ class AtualizarCodigoIBGECommand extends ContainerAwareCommand
         $this
             ->setName('bfos:brasil:atualizar-codigo-ibge')
             ->setDescription('Atualiza a tabela já existende de cidades com o código do munício do IBGE.')
-        ->setHelp("Example: php app/console bfos:brasil:atualizar-codigo-ibge")
+            ->setHelp("Example: php app/console bfos:brasil:atualizar-codigo-ibge")
         ;
     }
 
@@ -45,7 +44,7 @@ class AtualizarCodigoIBGECommand extends ContainerAwareCommand
         $quantCidadesAtualizadas = 0;
         while (!feof($file_handle)) {
             $line = trim(fgets($file_handle));
-            if ($lineNumber > 1 && strlen($line)>0) {
+            if ($lineNumber > 1 && strlen($line) > 0) {
 
                 try {
                     $columns = explode(',', $line);
@@ -56,7 +55,6 @@ class AtualizarCodigoIBGECommand extends ContainerAwareCommand
                     $uf = $columns[0];
                     $codigo = $columns[1];
                     $nomeCidade = $columns[2];
-//                    $output->write('Procurando...: ' . $uf . ' - ' . $nomeCidade);
 
                     /**
                      * @var Cidade $cidade
@@ -82,7 +80,5 @@ class AtualizarCodigoIBGECommand extends ContainerAwareCommand
         $output->writeln("Pronto!");
         $output->writeln("Cidades no arquivo de municípios             : " . $quantCidades);
         $output->writeln("Cidades atualizadas com o código de município: " . $quantCidadesAtualizadas);
-
     }
-
 }
