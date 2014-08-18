@@ -16,13 +16,13 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 class CpfcnpjValidator extends ConstraintValidator
 {
-    public function isValid($value, Constraint $constraint)
+    public function validate($value, Constraint $constraint)
     {
         if (!$constraint->aceitar) {
             throw new ConstraintDefinitionException('É necessário definer a opção "aceitar" da restrição.');
         }
 
-        if (!in_array($constraint->aceitar, array('cpf','cnpj','cpfcnpj'))) {
+        if (!in_array($constraint->aceitar, array('cpf', 'cnpj', 'cpfcnpj'))) {
             throw new ConstraintDefinitionException('A opção "aceitar" pode conter apenas os valores "cpf", "cnpj" ou "cpfcnpj".');
         }
 
@@ -31,17 +31,16 @@ class CpfcnpjValidator extends ConstraintValidator
         }
 
         switch ($constraint->aceitar) {
-
             case 'cnpj':
                 if (!$this->checkCNPJ($value, $constraint->aceitar_formatado)) {
-                    $this->setMessage($constraint->message_cnpj, array('{{ value }}' => $value));
+                    $this->context->addViolation($constraint->message_cnpj, array('{{ value }}' => $value));
                     return false;
                 }
                 break;
 
             case 'cpf':
                 if (!$this->checkCPF($value, $constraint->aceitar_formatado)) {
-                    $this->setMessage($constraint->message_cpf, array('{{ value }}' => $value));
+                    $this->context->addViolation($constraint->message_cpf, array('{{ value }}' => $value));
                     return false;
                 }
                 break;
@@ -49,12 +48,12 @@ class CpfcnpjValidator extends ConstraintValidator
             case 'cpfcnpj':
             default:
                 if (!($this->checkCPF($value, $constraint->aceitar_formatado) || $this->checkCNPJ($value, $constraint->aceitar_formatado))) {
-                    $this->setMessage($constraint->message_cpfcnpj, array('{{ value }}' => $value));
+                    $this->context->addViolation($constraint->message_cpfcnpj, array('{{ value }}' => $value));
                     return false;
                 }
                 break;
-
         }
+
         return true;
     }
 
@@ -64,13 +63,14 @@ class CpfcnpjValidator extends ConstraintValidator
      * Baseado em http://www.vivaolinux.com.br/script/Validacao-de-CPF-e-CNPJ/
      * Algoritmo em http://www.geradorcpf.com/algoritmo_do_cpf.htm
      * @param $cpf string
+     * @return bool
      * @author Rafael Goulart <rafaelgou@rgou.net>
      * Retirado do plugin do SF1 brFormExtraPlugin
      */
-    protected function checkCPF($cpf, $aceitar_formatado) {
-
+    protected function checkCPF($cpf, $aceitar_formatado)
+    {
         // Limpando caracteres especiais
-        if($aceitar_formatado){
+        if ($aceitar_formatado) {
             $cpf = $this->valueClean($cpf);
         }
 
@@ -80,7 +80,7 @@ class CpfcnpjValidator extends ConstraintValidator
         // Primeiro dígito
         $soma = 0;
         for ($i = 0; $i < 9; $i++) {
-            $soma += ((10-$i) * $cpf[$i]);
+            $soma += ((10 - $i) * $cpf[$i]);
         }
         $d1 = 11 - ($soma % 11);
         if ($d1 >= 10) $d1 = 0;
@@ -88,7 +88,7 @@ class CpfcnpjValidator extends ConstraintValidator
         // Segundo Dígito
         $soma = 0;
         for ($i = 0; $i < 10; $i++) {
-            $soma += ((11-$i) * $cpf[$i]);
+            $soma += ((11 - $i) * $cpf[$i]);
         }
         $d2 = 11 - ($soma % 11);
         if ($d2 >= 10) $d2 = 0;
@@ -105,17 +105,19 @@ class CpfcnpjValidator extends ConstraintValidator
      * Baseado em http://www.vivaolinux.com.br/script/Validacao-de-CPF-e-CNPJ/
      * Algoritmo em http://www.geradorcnpj.com/algoritmo_do_cnpj.htm
      * @param $cnpj string
+     * @return bool
      * @author Rafael Goulart <rafaelgou@rgou.net>
      * Retirado do plugin do SF1 brFormExtraPlugin
      */
-    protected function checkCNPJ($cnpj, $aceitar_formatado) {
-        if($aceitar_formatado){
+    protected function checkCNPJ($cnpj, $aceitar_formatado)
+    {
+        if ($aceitar_formatado) {
             $cnpj = $this->valueClean($cnpj);
         }
         if (strlen($cnpj) <> 14) return false;
 
         // Primeiro dígito
-        $multiplicadores = array(5,4,3,2,9,8,7,6,5,4,3,2);
+        $multiplicadores = array(5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2);
         $soma = 0;
         for ($i = 0; $i <= 11; $i++) {
             $soma += $multiplicadores[$i] * $cnpj[$i];
@@ -124,7 +126,7 @@ class CpfcnpjValidator extends ConstraintValidator
         if ($d1 >= 10) $d1 = 0;
 
         // Segundo dígito
-        $multiplicadores = array(6,5,4,3,2,9,8,7,6,5,4,3,2);
+        $multiplicadores = array(6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2);
         $soma = 0;
         for ($i = 0; $i <= 12; $i++) {
             $soma += $multiplicadores[$i] * $cnpj[$i];
@@ -143,17 +145,17 @@ class CpfcnpjValidator extends ConstraintValidator
      * valueClean
      * Retira caracteres especiais
      * @param $value string
+     * @return mixed|string
      * @author Rafael Goulart <rafaelgou@rgou.net>
      * Retirado do plugin do SF1 brFormExtraPlugin
      */
-    protected function valueClean ($value)
+    protected function valueClean($value)
     {
-        $value = str_replace (array(')','(','/','.','-',' '),'',$value);
-        if(strlen($value) == 15)
-        {
-            $value =  substr($value, 1, 15);
+        $value = str_replace(array(')', '(', '/', '.', '-', ' '), '', $value);
+        if (strlen($value) == 15) {
+            $value = substr($value, 1, 15);
         }
+
         return $value;
     }
-
 }
