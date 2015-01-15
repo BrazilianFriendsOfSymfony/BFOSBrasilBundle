@@ -18,7 +18,20 @@ class DddValidator extends ConstraintValidator
 {
     public static $DDDs = array(68, 82, 96, 92, 97, 71, 73, 74, 75, 77, 85, 88, 61, 27, 28, 61, 62, 64, 98, 99, 65, 66, 67, 31, 32, 33, 34, 35, 37, 38, 91, 93, 94, 83, 41, 42, 43, 44, 45, 46, 81, 87, 86, 89, 21, 22, 24, 84, 51, 53, 54, 55, 69, 95, 47, 48, 49, 11, 12, 13, 14, 15, 16, 17, 18, 19, 79, 63);
 
+    /**
+     * @deprecated Este método foi substituído por validate() em Fev2014
+     *             https://github.com/symfony/Validator/commit/0a2364b3eb6b15e6b8c80338db9efeffb1bf2242
+     *             Mantido por compatibilidade reversa
+     */
     public function isValid($value, Constraint $constraint)
+    {
+        return $this->validate($value, Constraint $constraint);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function validate($value, Constraint $constraint)
     {
 
         if (null === $value) {

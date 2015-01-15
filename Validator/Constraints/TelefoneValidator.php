@@ -16,7 +16,20 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 class TelefoneValidator extends ConstraintValidator
 {
+    /**
+     * @deprecated Este método foi substituído por validate() em Fev2014
+     *             https://github.com/symfony/Validator/commit/0a2364b3eb6b15e6b8c80338db9efeffb1bf2242
+     *             Mantido por compatibilidade reversa
+     */
     public function isValid($value, Constraint $constraint)
+    {
+        return $this->validate($value, Constraint $constraint);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function validate($value, Constraint $constraint)
     {
         if (!$constraint->aceitar) {
             throw new ConstraintDefinitionException('É necessário definer a opção "aceitar" da restrição.');
