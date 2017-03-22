@@ -58,46 +58,30 @@ class CpfcnpjValidator extends ConstraintValidator
         return true;
     }
 
-
     /**
      * checkCPF
-     * Baseado em http://www.vivaolinux.com.br/script/Validacao-de-CPF-e-CNPJ/
-     * Algoritmo em http://www.geradorcpf.com/algoritmo_do_cpf.htm
-     * @param $cpf string
-     * @author Rafael Goulart <rafaelgou@rgou.net>
-     * Retirado do plugin do SF1 brFormExtraPlugin
+     * @param $cpf string CPF com ou sem pontos e traço
+     * @param $aceitar_formatado (DEPRECATED) Mantido para preservar compatibilidade
+     * @author Bruno Lima <brunodplima@gmail.com>
+     * @return bool
      */
-    protected function checkCPF($cpf, $aceitar_formatado) {
+    protected function checkCPF($cpf, $aceitar_formatado = null) {
+        if (!is_null($aceitar_formatado))
+            trigger_error("O uso do parâmetro aceitar_formatado está marcado como DEPRECATED", E_USER_WARNING);
 
-        // Limpando caracteres especiais
-        if($aceitar_formatado){
-            $cpf = $this->valueClean($cpf);
-        }
-
-        // Quantidade mínima de caracteres ou erro
-        if (strlen($cpf) <> 11) return false;
-
-        // Primeiro dígito
-        $soma = 0;
-        for ($i = 0; $i < 9; $i++) {
-            $soma += ((10-$i) * $cpf[$i]);
-        }
-        $d1 = 11 - ($soma % 11);
-        if ($d1 >= 10) $d1 = 0;
-
-        // Segundo Dígito
-        $soma = 0;
-        for ($i = 0; $i < 10; $i++) {
-            $soma += ((11-$i) * $cpf[$i]);
-        }
-        $d2 = 11 - ($soma % 11);
-        if ($d2 >= 10) $d2 = 0;
-
-        if ($d1 == $cpf[9] && $d2 == $cpf[10]) {
-            return true;
-        } else {
+        if(strlen($cpf) != 11)
             return false;
+        $cpf = str_pad(preg_replace('/[^0-9]/', '', $cpf), 11, '0', STR_PAD_LEFT);
+        if ( strlen($cpf) != 11 || $cpf == '00000000000' || $cpf == '11111111111' || $cpf == '22222222222' || $cpf == '33333333333' || $cpf == '44444444444' || $cpf == '55555555555' || $cpf == '66666666666' || $cpf == '77777777777' || $cpf == '88888888888' || $cpf == '99999999999')
+            return false;
+        for ($t = 9; $t < 11; $t++) {
+            for ($d = 0, $c = 0; $c < $t; $c++)
+                $d += $cpf{$c} * (($t + 1) - $c);
+            $d = ((10 * $d) % 11) % 10;
+            if ($cpf{$c} != $d)
+                return false;
         }
+        return true;
     }
 
     /**
